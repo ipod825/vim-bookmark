@@ -4,6 +4,7 @@ CONTENTS				*bookmark-help-contents*
 
 Commands      |bookmark-commands|
 Functions     |bookmark-functions|
+Functions     |bookmark-options|
 
 ==============================================================================
 Commands 			   	*bookmark-commands*
@@ -39,5 +40,17 @@ bookmark#list([tag]) The result is a list, containing the content of the
 
 >
     call fzf#run(fzf#wrap({'source': bookmark#list()}))
+
+==============================================================================
+Options				    *bookmark-options*
+
+                                        *g:bookmark_dir*
+g:bookmark_dir          string (default: ~/.vim/bookmark)
+    Directory containing bookmark files.
+
+                                        *g:bookmark_opencmd*
+g:bookmark_opencmd          string (default: |edit|)
+    Command to open the selected bookmark using |BookmarkGo|.
+
 ==============================================================================
 vim:tw=78:et:ft=help:norl:
