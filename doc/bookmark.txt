@@ -1,0 +1,43 @@
+bookmark*.txt*
+===============================================================================
+CONTENTS				*bookmark-help-contents*
+
+Commands      |bookmark-commands|
+Functions     |bookmark-functions|
+
+==============================================================================
+Commands 			   	*bookmark-commands*
+
+							*:BookmarkAdd*
+:BookmarkAdd [tag]
+			Add the current file to the bookmark with filename {tag}, which is
+			`default` if ommited.
+
+							*:BookmarkDel*
+:BookmarkDel [tag]
+            Delete the current file from the bookmark with filename {tag}, which
+            is `default` if ommited.
+
+
+							*:BookmarkEdit*
+:BookmarkEdit [tag]
+			Edit the bookmark with filename {tag}, which is `default` if ommited.
+
+							*:BookmarkGo*
+:BookmarkGo [tag]
+            Display the bookmark file with filename {tag}, which is `default` if
+            ommited. Pressing `<cr>` in the bookmark buffer brings you to the
+            selected file.
+
+==============================================================================
+Functions				*bookmark-functions*
+
+                                        *bookmark#list()*
+bookmark#list([tag]) The result is a list, containing the content of the
+                     bookmark file with the name tag.  If tag is omitted,
+                     'default' is used. This can be used with othe fuzzy finder:
+
+>
+    call fzf#run(fzf#wrap({'source': bookmark#list()}))
+==============================================================================
+vim:tw=78:et:ft=help:norl:
