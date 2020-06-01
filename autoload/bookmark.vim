@@ -19,6 +19,14 @@ function! bookmark#add(...)
     call writefile(l:list, s:bookmark_file(l:tag))
 endfunction
 
+function! bookmark#addpos(...)
+    let l:tag = !empty(a:0)? a:1 : 'default'
+    let l:list = bookmark#list(l:tag)
+    let l:list = uniq(extend(l:list, [expand('%:p').':'.line('.').':'.col('.')]))
+    call writefile(l:list, s:bookmark_file(l:tag))
+endfunction
+
+
 function! bookmark#del(...)
     let l:tag = !empty(a:0)? a:1 : 'default'
     let l:list = bookmark#list(l:tag)
@@ -33,22 +41,36 @@ function! bookmark#edit(...)
     let l:tag = !empty(a:0)? a:1 : 'default'
     exec 'split '.s:bookmark_file(l:tag)
     wincmd J
+    setlocal filetype=bookmark
 endfunction
 
 function! bookmark#goimpl()
    let l:path = getline('.')
    let l:can_go = v:true
+   let l:pos_ind =  match(l:path, ':[0-9]*:[0-9]*$')
+
+   let l:line = 0
+   if l:pos_ind > -1
+       let [l:line, l:col] = split(l:path[l:pos_ind:], ':')
+       echom split(l:path[l:pos_ind:], ':')
+       let l:path = l:path[:l:pos_ind-1]
+   endif
+
    if !filereadable(l:path) && !isdirectory(l:path)
        echoerr "Not found: ".l:path
        let l:can_go = v:false
    endif
-   nunmap <buffer> <cr>
-   quit
+   bwipeout
    if l:can_go
        exec g:bookmark_opencmd.' '.l:path
        if isdirectory(l:path) && exists(':NETRTabdrop')
            exec g:_NETRPY.'with ranger.KeepPreviewState(): pass'
        endif
+   endif
+
+   if l:line > 0
+       exec 'normal! '.l:line.'G'
+       exec 'normal! '.l:col.'|'
    endif
 endfunction
 
