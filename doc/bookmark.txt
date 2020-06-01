@@ -1,39 +1,44 @@
 bookmark*.txt*
 ===============================================================================
-CONTENTS				*bookmark-help-contents*
+CONTENTS			        	*bookmark-help-contents*
 
 Commands      |bookmark-commands|
 Functions     |bookmark-functions|
 Functions     |bookmark-options|
 
 ==============================================================================
-Commands 			   	*bookmark-commands*
+Commands 			        	*bookmark-commands*
 
-							*:BookmarkAdd*
+						    	*:BookmarkAdd*
 :BookmarkAdd [tag]
 			Add the current file to the bookmark with filename {tag}, which is
 			`default` if ommited.
 
-							*:BookmarkDel*
+						    	*:BookmarkAdd*
+:BookmarkAddPos [tag]
+            Add the current file, affixed with current line and column number,
+            to the bookmark with filename {tag}, which is `default` if ommited.
+
+						    	*:BookmarkDel*
 :BookmarkDel [tag]
             Delete the current file from the bookmark with filename {tag}, which
             is `default` if ommited.
 
 
-							*:BookmarkEdit*
+						    	*:BookmarkEdit*
 :BookmarkEdit [tag]
 			Edit the bookmark with filename {tag}, which is `default` if ommited.
 
-							*:BookmarkGo*
+						    	*:BookmarkGo*
 :BookmarkGo [tag]
             Display the bookmark file with filename {tag}, which is `default` if
             ommited. Pressing `<cr>` in the bookmark buffer brings you to the
             selected file.
 
 ==============================================================================
-Functions				*bookmark-functions*
+Functions			        	*bookmark-functions*
 
-                                        *bookmark#list()*
+                                *bookmark#list()*
 bookmark#list([tag]) The result is a list, containing the content of the
                      bookmark file with the name tag.  If tag is omitted,
                      'default' is used. This can be used with othe fuzzy finder:
@@ -42,13 +47,13 @@ bookmark#list([tag]) The result is a list, containing the content of the
     call fzf#run(fzf#wrap({'source': bookmark#list()}))
 
 ==============================================================================
-Options				    *bookmark-options*
+Options				            *bookmark-options*
 
-                                        *g:bookmark_dir*
+                                 *g:bookmark_dir*
 g:bookmark_dir          string (default: ~/.vim/bookmark)
     Directory containing bookmark files.
 
-                                        *g:bookmark_opencmd*
+                                 *g:bookmark_opencmd*
 g:bookmark_opencmd          string (default: |edit|)
     Command to open the selected bookmark using |BookmarkGo|.
 
