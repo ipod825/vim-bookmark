@@ -15,14 +15,18 @@ function! bookmark#list(...)
     return s:cached_list[l:tag]
 endfunction
 
-function! bookmark#add(...)
-    let l:list = bookmark#list(a:000)
-    let l:list = extend(l:list, [substitute(expand('%:p'), $HOME, '~', '')])
-    call writefile(l:list, s:bookmark_file(a:000))
-endfunction
-
 function! s:FilePosString()
     return substitute(expand('%:p'), $HOME, '~', '').':'.line('.')
+endfunction
+
+function! s:FileString()
+    return substitute(expand('%:p'), $HOME, '~', '')
+endfunction
+
+function! bookmark#add(...)
+    let l:list = bookmark#list(a:000)
+    call add(l:list, s:FileString())
+    call writefile(l:list, s:bookmark_file(a:000))
 endfunction
 
 function! bookmark#pos_context_fn()
@@ -31,13 +35,14 @@ endfunction
 
 function! bookmark#addpos(...)
     let l:list = bookmark#list(a:000)
-    let l:list = extend(l:list, [s:FilePosString()]+map(g:Bookmark_pos_context_fn(), '"# ".v:val'))
+    call add(l:list, s:FilePosString())
+    call extend(l:list, map(g:Bookmark_pos_context_fn(), '"# ".v:val'))
     call writefile(l:list, s:bookmark_file(a:000))
 endfunction
 
 function! bookmark#del(...)
     let l:list = bookmark#list(a:0)
-    let l:ind = index(l:list, expand('%:p'))
+    let l:ind = index(l:list, s:FileString())
     if l:ind > -1
         unlet l:list[l:ind]
         call writefile(l:list, s:bookmark_file(a:000))
