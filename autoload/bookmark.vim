@@ -1,45 +1,61 @@
 let s:cached_list = get(s:, 'cached_list', {})
 
-function! s:bookmark_file(tag)
-    return g:bookmark_dir.(a:tag)
+function! s:bookmark_file(...)
+    call assert_true(a:0==1)
+    let l:tag = empty(a:1)? 'default' : a:1[0]
+    return g:bookmark_dir.l:tag
 endfunction
 
 function! bookmark#list(...)
-    let l:tag = !empty(a:0)? a:1 : 'default'
+    call assert_true(a:0==1)
+    let l:tag = empty(a:1)? 'default' : a:1[0]
     if !has_key(s:cached_list, l:tag)
-        let s:cached_list[l:tag] = readfile(s:bookmark_file(l:tag))
+        let s:cached_list[l:tag] = readfile(s:bookmark_file(a:1))
     endif
     return s:cached_list[l:tag]
 endfunction
 
 function! bookmark#add(...)
-    let l:tag = !empty(a:0)? a:1 : 'default'
-    let l:list = bookmark#list(l:tag)
-    let l:list = uniq(extend(l:list, [substitute(expand('%:p'), $HOME, '~', '')]))
-    call writefile(l:list, s:bookmark_file(l:tag))
+    let l:list = bookmark#list(a:000)
+    let l:list = extend(l:list, [substitute(expand('%:p'), $HOME, '~', '')])
+    call writefile(l:list, s:bookmark_file(a:000))
+endfunction
+
+function! s:FilePosString()
+    return substitute(expand('%:p'), $HOME, '~', '').':'.line('.').':'.col('.')
+endfunction
+
+function! bookmark#pos_context_fn()
+    return getline('.')
 endfunction
 
 function! bookmark#addpos(...)
-    let l:tag = !empty(a:0)? a:1 : 'default'
-    let l:list = bookmark#list(l:tag)
-    let l:list = uniq(extend(l:list, [substitute(expand('%:p'), $HOME, '~', '').':'.line('.').':'.col('.')]))
-    call writefile(l:list, s:bookmark_file(l:tag))
+    let l:list = bookmark#list(a:000)
+    let l:list = extend(l:list, [s:FilePosString()]+map(g:Bookmark_pos_context_fn(), '"# ".v:val'))
+    call writefile(l:list, s:bookmark_file(a:000))
 endfunction
 
-
 function! bookmark#del(...)
-    let l:tag = !empty(a:0)? a:1 : 'default'
-    let l:list = bookmark#list(l:tag)
+    let l:list = bookmark#list(a:0)
     let l:ind = index(l:list, expand('%:p'))
     if l:ind > -1
         unlet l:list[l:ind]
-        call writefile(l:list, s:bookmark_file(l:tag))
+        call writefile(l:list, s:bookmark_file(a:000))
+    endif
+endfunction
+
+function! bookmark#delpos(...)
+    let l:list = bookmark#list(a:0)
+    let l:ind = index(FilePosString())
+    if l:ind > -1
+        unlet l:list[l:ind-1]
+        unlet l:list[l:ind]
+        call writefile(l:list, s:bookmark_file(a:000))
     endif
 endfunction
 
 function! bookmark#edit(...)
-    let l:tag = !empty(a:0)? a:1 : 'default'
-    exec 'split '.s:bookmark_file(l:tag)
+    exec 'split '.s:bookmark_file(a:000)
     wincmd J
     silent! nunmap <buffer> <cr>
     nmap <silent><buffer> zh :call bookmark#toggle_filter()<cr>

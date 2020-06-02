@@ -7,11 +7,13 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 let g:bookmark_opencmd = get(g:, 'bookmark_opencmd', 'edit')
-let g:bookmark_dir = get(g:,'bookmark_dir', $HOME.'/.vim-bookmark')
+let g:bookmark_dir = get(g:,'bookmark_dir', $HOME.'/.vim-bookmark/')
 
 if !isdirectory(g:bookmark_dir)
     call mkdir(g:bookmark_dir)
 endif
+
+let g:Bookmark_pos_context_fn = get(g:, 'Bookmark_pos_context_fn', function('bookmark#pos_context_fn'))
 
 
 command! -nargs=? BookmarkAdd exec 'call bookmark#add(<f-args>)'

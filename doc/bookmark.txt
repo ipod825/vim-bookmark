@@ -24,6 +24,12 @@ Commands 			        	*bookmark-commands*
             Delete the current file from the bookmark with filename {tag}, which
             is `default` if ommited.
 
+						    	*:BookmarkDelPos*
+:BookmarkDelPos [tag]
+            Delete the current file, affixed with current line and column
+            number, from the bookmark with filename {tag}, which is `default` if
+            ommited.
+
 						    	*:BookmarkGo*
 :BookmarkGo [tag]
             Display the bookmark file with filename {tag}, which is `default` if
@@ -52,6 +58,13 @@ g:bookmark_dir          string (default: ~/.vim/bookmark)
                                  *g:bookmark_opencmd*
 g:bookmark_opencmd          string (default: |edit|)
     Command to open the selected bookmark using |BookmarkGo|.
+
+                                 *g:Bookmark_pos_context_fn*
+g:Bookmark_pos_context_fn   function(default: |bookmark#pos_context_fn|)
+    A customized function that returns a list of string to be appended after
+    the bookmark plus position string. Each iterm in the list will be
+    prefixxed with `#`, the comment token for the bookmark file. The default
+    function return the content of the current line.
 
 ==============================================================================
 vim:tw=78:et:ft=help:norl:
