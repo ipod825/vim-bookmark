@@ -1,5 +1,3 @@
-let s:cached_list = get(s:, 'cached_list', {})
-
 function! s:bookmark_file(...)
     call assert_true(a:0==1)
     let l:tag = empty(a:1)? 'default' : a:1[0]
@@ -9,10 +7,7 @@ endfunction
 function! bookmark#list(...)
     call assert_true(a:0==1)
     let l:tag = empty(a:1)? 'default' : a:1[0]
-    if !has_key(s:cached_list, l:tag)
-        let s:cached_list[l:tag] = readfile(s:bookmark_file(a:1))
-    endif
-    return s:cached_list[l:tag]
+    return readfile(s:bookmark_file(a:1))
 endfunction
 
 function! s:FilePosString()
