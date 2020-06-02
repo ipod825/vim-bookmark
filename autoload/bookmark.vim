@@ -76,7 +76,7 @@ function! bookmark#goimpl()
 
    let l:line = 0
    if l:pos_ind > -1
-       let l:line = l:path[l:pos_ind:]
+       let l:line = l:path[l:pos_ind+1:]
        let l:path = l:path[:l:pos_ind-1]
    endif
 
