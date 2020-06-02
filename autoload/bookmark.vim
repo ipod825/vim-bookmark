@@ -58,12 +58,12 @@ endfunction
 
 function! bookmark#edit(...)
     exec 'split '.s:bookmark_file(a:000)
+    setlocal filetype=bookmark
+    setlocal autoread
+    setlocal commentstring=#\ %s
     wincmd J
     silent! nunmap <buffer> <cr>
     nmap <silent><buffer> zh :call bookmark#toggle_filter()<cr>
-    setlocal autoread
-    setlocal commentstring=#\ %s
-    setlocal filetype=bookmark
 endfunction
 
 function! bookmark#toggle_filter()
