@@ -8,7 +8,7 @@ This plugin enables user to bookmark files and open them:
 ```viml
 " Add the current file to the bookmark file
 :BookmarkAdd
-" Add the current file, affixed with line & column number, to the bookmark file
+" Add the current file, affixed with line number, to the bookmark file
 :BookmarkAddPos
 " Remove the current file from the bookmark file
 :BookmarkDel

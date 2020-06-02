@@ -16,8 +16,8 @@ Commands 			        	*bookmark-commands*
 
 						    	*:BookmarkAdd*
 :BookmarkAddPos [tag]
-            Add the current file, affixed with current line and column number,
-            to the bookmark with filename {tag}, which is `default` if ommited.
+            Add the current file, affixed with current line number, to the
+            bookmark with filename {tag}, which is `default` if ommited.
 
 						    	*:BookmarkDel*
 :BookmarkDel [tag]
@@ -26,9 +26,8 @@ Commands 			        	*bookmark-commands*
 
 						    	*:BookmarkDelPos*
 :BookmarkDelPos [tag]
-            Delete the current file, affixed with current line and column
-            number, from the bookmark with filename {tag}, which is `default` if
-            ommited.
+            Delete the current file, affixed with current line number, from the
+            bookmark with filename {tag}, which is `default` if ommited.
 
 						    	*:BookmarkGo*
 :BookmarkGo [tag]

@@ -22,7 +22,7 @@ function! bookmark#add(...)
 endfunction
 
 function! s:FilePosString()
-    return substitute(expand('%:p'), $HOME, '~', '').':'.line('.').':'.col('.')
+    return substitute(expand('%:p'), $HOME, '~', '').':'.line('.')
 endfunction
 
 function! bookmark#pos_context_fn()
@@ -46,10 +46,12 @@ endfunction
 
 function! bookmark#delpos(...)
     let l:list = bookmark#list(a:0)
-    let l:ind = index(FilePosString())
+    let l:ind = index(l:list, s:FilePosString())
     if l:ind > -1
-        unlet l:list[l:ind-1]
         unlet l:list[l:ind]
+        while l:ind < len(l:list) && l:list[l:ind] =~ '^["#].*$'
+            unlet l:list[l:ind]
+        endwhile
         call writefile(l:list, s:bookmark_file(a:000))
     endif
 endfunction
@@ -70,11 +72,11 @@ endfunction
 function! bookmark#goimpl()
    let l:path = expand(getline('.'))
    let l:can_go = v:true
-   let l:pos_ind =  match(l:path, ':[0-9]*:[0-9]*$')
+   let l:pos_ind =  match(l:path, ':[0-9]*$')
 
    let l:line = 0
    if l:pos_ind > -1
-       let [l:line, l:col] = split(l:path[l:pos_ind:], ':')
+       let l:line = l:path[l:pos_ind:]
        let l:path = l:path[:l:pos_ind-1]
    endif
 
@@ -92,7 +94,6 @@ function! bookmark#goimpl()
 
    if l:line > 0
        exec 'normal! '.l:line.'G'
-       exec 'normal! '.l:col.'|'
    endif
 endfunction
 
