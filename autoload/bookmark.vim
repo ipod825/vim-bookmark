@@ -59,7 +59,6 @@ function! bookmark#goimpl()
    let l:line = 0
    if l:pos_ind > -1
        let [l:line, l:col] = split(l:path[l:pos_ind:], ':')
-       echom split(l:path[l:pos_ind:], ':')
        let l:path = l:path[:l:pos_ind-1]
    endif
 
