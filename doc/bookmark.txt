@@ -24,16 +24,12 @@ Commands 			        	*bookmark-commands*
             Delete the current file from the bookmark with filename {tag}, which
             is `default` if ommited.
 
-
-						    	*:BookmarkEdit*
-:BookmarkEdit [tag]
-			Edit the bookmark with filename {tag}, which is `default` if ommited.
-
 						    	*:BookmarkGo*
 :BookmarkGo [tag]
             Display the bookmark file with filename {tag}, which is `default` if
             ommited. Pressing `<cr>` in the bookmark buffer brings you to the
-            selected file.
+            selected file. You can also edit the bookmark file inside the
+            buffer.
 
 ==============================================================================
 Functions			        	*bookmark-functions*

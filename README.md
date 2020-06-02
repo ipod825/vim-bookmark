@@ -12,9 +12,8 @@ This plugin enables user to bookmark files and open them:
 :BookmarkAddPos
 " Remove the current file from the bookmark file
 :BookmarkDel
-" Edit the bookmark file
-:BookmarkEdit
 " Display the bookmark file. Pressing `<cr>` in it brings you to the selected file
+" Note that you can directly edit the bookmark file
 :BookmarkGo
 ```
 All of the above command takes an optional argument specifying which bookmark you want to use. If not provided, `default` is used.

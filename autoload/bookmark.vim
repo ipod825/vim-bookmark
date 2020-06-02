@@ -15,14 +15,14 @@ endfunction
 function! bookmark#add(...)
     let l:tag = !empty(a:0)? a:1 : 'default'
     let l:list = bookmark#list(l:tag)
-    let l:list = uniq(extend(l:list, [expand('%:p')]))
+    let l:list = uniq(extend(l:list, [substitute(expand('%:p'), $HOME, '~', '')]))
     call writefile(l:list, s:bookmark_file(l:tag))
 endfunction
 
 function! bookmark#addpos(...)
     let l:tag = !empty(a:0)? a:1 : 'default'
     let l:list = bookmark#list(l:tag)
-    let l:list = uniq(extend(l:list, [expand('%:p').':'.line('.').':'.col('.')]))
+    let l:list = uniq(extend(l:list, [substitute(expand('%:p'), $HOME, '~', '').':'.line('.').':'.col('.')]))
     call writefile(l:list, s:bookmark_file(l:tag))
 endfunction
 
@@ -41,11 +41,18 @@ function! bookmark#edit(...)
     let l:tag = !empty(a:0)? a:1 : 'default'
     exec 'split '.s:bookmark_file(l:tag)
     wincmd J
+    silent! nunmap <buffer> <cr>
+    nmap <silent><buffer> zh :call bookmark#toggle_filter()<cr>
+    setlocal autoread
+    setlocal commentstring=#\ %s
     setlocal filetype=bookmark
 endfunction
 
+function! bookmark#toggle_filter()
+endfunction
+
 function! bookmark#goimpl()
-   let l:path = getline('.')
+   let l:path = expand(getline('.'))
    let l:can_go = v:true
    let l:pos_ind =  match(l:path, ':[0-9]*:[0-9]*$')
 
@@ -60,7 +67,7 @@ function! bookmark#goimpl()
        echoerr "Not found: ".l:path
        let l:can_go = v:false
    endif
-   bwipeout
+   quit
    if l:can_go
        exec g:bookmark_opencmd.' '.l:path
        if isdirectory(l:path) && exists(':NETRTabdrop')

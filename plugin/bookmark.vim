@@ -17,7 +17,6 @@ endif
 command! -nargs=? BookmarkAdd exec 'call bookmark#add(<f-args>)'
 command! -nargs=? BookmarkAddPos exec 'call bookmark#addpos(<f-args>)'
 command! -nargs=? BookmarkDel exec 'call bookmark#del(<f-args>)'
-command! -nargs=? BookmarkEdit exec 'call bookmark#edit(<f-args>)'
 command! -nargs=? BookmarkGo exec 'call bookmark#go(<f-args>)'
 
 let &cpo = s:save_cpo
