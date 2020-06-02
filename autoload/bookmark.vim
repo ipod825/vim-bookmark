@@ -79,30 +79,30 @@ function! bookmark#goimpl()
 
     let l:path = expand(l:path)
 
-   let l:can_go = v:true
-   let l:pos_ind =  match(l:path, ':[0-9]*$')
+    let l:can_go = v:true
+    let l:pos_ind =  match(l:path, ':[0-9]*$')
 
-   let l:line = 0
-   if l:pos_ind > -1
-       let l:line = l:path[l:pos_ind+1:]
-       let l:path = l:path[:l:pos_ind-1]
-   endif
+    let l:line = 0
+    if l:pos_ind > -1
+        let l:line = l:path[l:pos_ind+1:]
+        let l:path = l:path[:l:pos_ind-1]
+    endif
 
-   if !filereadable(l:path) && !isdirectory(l:path)
-       echoerr "Not found: ".l:path
-       let l:can_go = v:false
-   endif
-   quit
-   if l:can_go
-       exec g:bookmark_opencmd.' '.l:path
-       if isdirectory(l:path) && exists(':NETRTabdrop')
-           exec g:_NETRPY.'with ranger.KeepPreviewState(): pass'
-       endif
-   endif
+    if !filereadable(l:path) && !isdirectory(l:path)
+        echoerr "Not found: ".l:path
+        let l:can_go = v:false
+    endif
+    quit
+    if l:can_go
+        exec g:bookmark_opencmd.' '.l:path
+        if isdirectory(l:path) && exists(':NETRTabdrop')
+            exec g:_NETRPY.'with ranger.KeepPreviewState(): pass'
+        endif
+    endif
 
-   if l:line > 0
-       exec 'normal! '.l:line.'G'
-   endif
+    if l:line > 0
+        exec 'normal! '.l:line.'G'
+    endif
 endfunction
 
 function! bookmark#go(...)
