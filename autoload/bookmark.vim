@@ -70,7 +70,15 @@ function! bookmark#toggle_filter()
 endfunction
 
 function! bookmark#goimpl()
-   let l:path = expand(getline('.'))
+    let l:lineno = line('.')
+    let l:path = getline(l:lineno)
+    while l:path =~ '^["#].*$'
+        let l:lineno -= 1
+        let l:path = getline(l:lineno)
+    endwhile
+
+    let l:path = expand(l:path)
+
    let l:can_go = v:true
    let l:pos_ind =  match(l:path, ':[0-9]*$')
 
