@@ -1,13 +1,17 @@
-function! s:bookmark_file(...)
-    call assert_true(a:0==1)
-    let l:tag = empty(a:1)? 'default' : a:1[0]
-    return g:bookmark_dir.l:tag
+function! s:bookmark_file(tag)
+    return g:bookmark_dir.a:tag
 endfunction
 
-function! bookmark#list(...)
-    call assert_true(a:0==1)
-    let l:tag = empty(a:1)? 'default' : a:1[0]
-    return readfile(s:bookmark_file(a:1))
+function! bookmark#list(tag)
+    if filereadable(s:bookmark_file(a:tag))
+        return readfile(s:bookmark_file(a:tag))
+    else
+        return []
+    endif
+endfunction
+
+function! s:get_tag(args)
+    return empty(a:args)? 'default': a:args[0]
 endfunction
 
 function! s:FilePosString()
@@ -19,9 +23,10 @@ function! s:FileString()
 endfunction
 
 function! bookmark#add(...)
-    let l:list = bookmark#list(a:000)
+    let l:tag = s:get_tag(a:000)
+    let l:list = bookmark#list(l:tag)
     call add(l:list, s:FileString())
-    call writefile(l:list, s:bookmark_file(a:000))
+    call writefile(l:list, s:bookmark_file(l:tag))
 endfunction
 
 function! bookmark#pos_context_fn()
@@ -29,35 +34,38 @@ function! bookmark#pos_context_fn()
 endfunction
 
 function! bookmark#addpos(...)
-    let l:list = bookmark#list(a:000)
+    let l:tag = s:get_tag(a:000)
+    let l:list = bookmark#list(l:tag)
     call add(l:list, s:FilePosString())
     call extend(l:list, map(g:Bookmark_pos_context_fn(), '"# ".v:val'))
-    call writefile(l:list, s:bookmark_file(a:000))
+    call writefile(l:list, s:bookmark_file(l:tag))
 endfunction
 
 function! bookmark#del(...)
-    let l:list = bookmark#list(a:0)
+    let l:tag = s:get_tag(a:000)
+    let l:list = bookmark#list(l:tag)
     let l:ind = index(l:list, s:FileString())
     if l:ind > -1
         unlet l:list[l:ind]
-        call writefile(l:list, s:bookmark_file(a:000))
+        call writefile(l:list, s:bookmark_file(l:tag))
     endif
 endfunction
 
 function! bookmark#delpos(...)
-    let l:list = bookmark#list(a:0)
+    let l:tag = s:get_tag(a:000)
+    let l:list = bookmark#list(l:tag)
     let l:ind = index(l:list, s:FilePosString())
     if l:ind > -1
         unlet l:list[l:ind]
         while l:ind < len(l:list) && l:list[l:ind] =~ '^["#].*$'
             unlet l:list[l:ind]
         endwhile
-        call writefile(l:list, s:bookmark_file(a:000))
+        call writefile(l:list, s:bookmark_file(l:tag))
     endif
 endfunction
 
-function! bookmark#edit(...)
-    exec 'split '.s:bookmark_file(a:000)
+function! bookmark#edit(tag)
+    exec 'split '.s:bookmark_file(a:tag)
     wincmd J
     setlocal filetype=bookmark
     setlocal bufhidden=wipe
@@ -106,6 +114,7 @@ function! bookmark#goimpl()
 endfunction
 
 function! bookmark#go(...)
-    call bookmark#edit()
+    let l:tag = s:get_tag(a:000)
+    call bookmark#edit(l:tag)
     nnoremap <buffer> <cr> :call bookmark#goimpl()<cr>
 endfunction
