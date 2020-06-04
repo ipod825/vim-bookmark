@@ -16,10 +16,10 @@ endif
 let g:Bookmark_pos_context_fn = get(g:, 'Bookmark_pos_context_fn', function('bookmark#pos_context_fn'))
 
 
-command! -nargs=? BookmarkAdd exec 'call bookmark#add(<f-args>)'
-command! -nargs=? BookmarkAddPos exec 'call bookmark#addpos(<f-args>)'
-command! -nargs=? BookmarkDel exec 'call bookmark#del(<f-args>)'
-command! -nargs=? BookmarkDelPos exec 'call bookmark#delpos(<f-args>)'
-command! -nargs=? BookmarkGo exec 'call bookmark#go(<f-args>)'
+command! -complete=customlist,bookmark#complete -nargs=? BookmarkAdd exec 'call bookmark#add(<f-args>)'
+command! -complete=customlist,bookmark#complete -nargs=? BookmarkAddPos exec 'call bookmark#addpos(<f-args>)'
+command! -complete=customlist,bookmark#complete -nargs=? BookmarkDel exec 'call bookmark#del(<f-args>)'
+command! -complete=customlist,bookmark#complete -nargs=? BookmarkDelPos exec 'call bookmark#delpos(<f-args>)'
+command! -complete=customlist,bookmark#complete -nargs=? BookmarkGo exec 'call bookmark#go(<f-args>)'
 
 let &cpo = s:save_cpo

@@ -10,6 +10,10 @@ function! bookmark#list(tag)
     endif
 endfunction
 
+function bookmark#complete(A,L,P)
+    return systemlist("ls ".g:bookmark_dir)
+endfunction
+
 function! s:get_tag(args)
     return empty(a:args)? 'default': a:args[0]
 endfunction
