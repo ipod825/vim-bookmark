@@ -29,8 +29,11 @@ endfunction
 function! bookmark#add(...)
     let l:tag = s:get_tag(a:000)
     let l:list = bookmark#list(l:tag)
-    call add(l:list, s:FileString())
-    call writefile(l:list, s:bookmark_file(l:tag))
+    let l:file_string = s:FileString()
+    if index(l:list, l:file_string) == -1
+        call add(l:list, l:file_string)
+        call writefile(l:list, s:bookmark_file(l:tag))
+    endif
 endfunction
 
 function! bookmark#pos_context_fn()
