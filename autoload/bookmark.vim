@@ -75,6 +75,7 @@ function! bookmark#edit(tag)
     exec 'split '.s:bookmark_file(a:tag)
     wincmd J
     setlocal filetype=bookmark
+    setlocal autoread
     setlocal commentstring=#\ %s
     silent! nunmap <buffer> <cr>
     nmap <silent><buffer> zh :call bookmark#toggle_filter()<cr>
