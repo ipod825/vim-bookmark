@@ -109,7 +109,7 @@ function! bookmark#goimpl()
     endif
     quit
     if l:can_go
-        exec g:bookmark_opencmd.' '.l:path
+        exec g:bookmark_opencmd.' '.fnameescape(l:path)
         if isdirectory(l:path) && exists(':NETRTabdrop')
             exec g:_NETRPY.'with ranger.KeepPreviewState(): pass'
         endif
