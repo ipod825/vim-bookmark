@@ -107,7 +107,12 @@ function! bookmark#goimpl()
         echoerr "Not found: ".l:path
         let l:can_go = v:false
     endif
-    quit
+
+    " noautocmd in case bufenter does something bad, for e.g. auto startinsert
+    " on terminal buffer which might be delayed to startinesrt on the target
+    " file.
+    noautocmd quit
+
     if l:can_go
         exec g:bookmark_opencmd.' '.fnameescape(l:path)
         if isdirectory(l:path) && exists(':NETRTabdrop')
