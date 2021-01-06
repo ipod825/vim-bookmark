@@ -84,7 +84,7 @@ endfunction
 function! bookmark#toggle_filter()
 endfunction
 
-function! bookmark#goimpl()
+function! bookmark#open(...)
     let l:lineno = line('.')
     let l:path = getline(l:lineno)
     while l:path =~ '^["#].*$'
@@ -113,8 +113,10 @@ function! bookmark#goimpl()
     " file.
     noautocmd quit
 
+    let l:open_cmd = len(a:000)>0? a:1 : g:bookmark_opencmd
     if l:can_go
-        exec g:bookmark_opencmd.' '.fnameescape(l:path)
+        exec l:open_cmd.' '.fnameescape(l:path)
+        " exec l:open_cmd.' '.fnameescape(l:path)
         if isdirectory(l:path) && exists(':NETRTabdrop')
             exec g:_NETRPY.'with ranger.KeepPreviewState(): pass'
         endif
@@ -128,5 +130,5 @@ endfunction
 function! bookmark#go(...)
     let l:tag = s:get_tag(a:000)
     call bookmark#edit(l:tag)
-    nnoremap <buffer> <cr> :call bookmark#goimpl()<cr>
+    nnoremap <buffer> <cr> :call bookmark#open()<cr>
 endfunction

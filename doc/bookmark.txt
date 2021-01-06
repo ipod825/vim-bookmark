@@ -47,6 +47,14 @@ bookmark#list([tag]) The result is a list, containing the content of the
 >
     call fzf#run(fzf#wrap({'source': bookmark#list()}))
 
+                                *bookmark#open()*
+bookmark#open([cmd]) No return value. Open the bookmark under cursor with `cmd`.
+                     If `cmd` is omitted, |g:bookmark_opencmd|, is used.
+
+
+>
+    autocmd Filetype bookmark nmap <buffer> <c-t> <cmd>call bookmark#open('tabedit')<cr>
+
 ==============================================================================
 Options				            *bookmark-options*
 
