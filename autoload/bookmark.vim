@@ -37,7 +37,7 @@ function! bookmark#add(...)
 endfunction
 
 function! bookmark#pos_context_fn()
-    return getline('.')
+    return [getline('.')]
 endfunction
 
 function! bookmark#addpos(...)
