@@ -111,7 +111,7 @@ function! bookmark#open(...)
     " noautocmd in case bufenter does something bad, for e.g. auto startinsert
     " on terminal buffer which might be delayed to startinesrt on the target
     " file.
-    noautocmd quit
+    noautocmd write | bdelete
 
     let l:open_cmd = len(a:000)>0? a:1 : g:bookmark_opencmd
     if l:can_go
